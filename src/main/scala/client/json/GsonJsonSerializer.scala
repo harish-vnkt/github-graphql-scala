@@ -1,17 +1,17 @@
 package client.json
 import com.google.gson.{Gson, JsonObject}
 
-class GsonSerializeParser(gson:Gson) extends JsonSerializeParser {
+class GsonSerializer(gson:Gson) extends JsonSerializer {
 
   override def serializer(jsonObj:JsonObject):String= gson.toJson(jsonObj)
 
 
 }
 
-object GsonSerializeParser{
+object GsonSerializer{
 
-  def build:GsonSerializeParser={
+  def build:GsonSerializer={
     val gson = new Gson()
-    new GsonSerializeParser(gson)
+    new GsonSerializer(gson)
   }
 }

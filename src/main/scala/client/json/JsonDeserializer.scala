@@ -13,6 +13,6 @@ trait JsonDeserializeParser {
    * @tparam T the scala case class that is passed to which the json string is deserialized
    * @return The object of the case class to which the json parts are mapped
    */
-  def deserializer[T:Manifest](json:String):T
+  def deserialize[T:Manifest](json:String):T
 
 }
