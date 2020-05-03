@@ -1,6 +1,6 @@
 package builders.queryBuilders
 
-import builders.QueryBuilder
+import builders.{PaginationValue, QueryBuilder}
 
 case class TopicQueryBuilder(scalars: List[String] = List(),
                              fields: List[QueryBuilder] = List(),
@@ -22,7 +22,11 @@ case class TopicQueryBuilder(scalars: List[String] = List(),
     this.modifyTopQuery(topicQueryBuilder)
   }
 
-  def includeStargazers(stargazerQueryBuilder: UserQueryBuilder): TopicQueryBuilder = {
+  def includeStargazers(
+                         stargazerQueryBuilder: UserQueryBuilder,
+                         numberOfResults: PaginationValue
+                       ): TopicQueryBuilder = {
+    stargazerQueryBuilder.topQuery = stargazerQueryBuilder.topQuery + s"(${numberOfResults.argument})"
     val topicQueryBuilder: TopicQueryBuilder = new TopicQueryBuilder(
       this.scalars,
       this.fields,

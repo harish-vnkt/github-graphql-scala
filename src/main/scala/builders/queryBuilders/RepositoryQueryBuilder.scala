@@ -1,6 +1,6 @@
 package builders.queryBuilders
 
-import builders.QueryBuilder
+import builders.{PaginationValue, QueryBuilder}
 
 case class RepositoryQueryBuilder(scalars: List[String] = List(),
                                   fields: List[QueryBuilder] = List(),
@@ -58,7 +58,11 @@ case class RepositoryQueryBuilder(scalars: List[String] = List(),
     this.modifyTopQuery(repositoryQueryBuilder)
   }
 
-  def includeForks(forkQueryBuilder: RepositoryQueryBuilder): RepositoryQueryBuilder = {
+  def includeForks(
+                    forkQueryBuilder: RepositoryQueryBuilder,
+                    numberOfResults: PaginationValue
+                  ): RepositoryQueryBuilder = {
+    forkQueryBuilder.topQuery = forkQueryBuilder.topQuery + s"(${numberOfResults.argument})"
     val repositoryQueryBuilder: RepositoryQueryBuilder = new RepositoryQueryBuilder(
       this.scalars,
       this.fields,
@@ -67,7 +71,11 @@ case class RepositoryQueryBuilder(scalars: List[String] = List(),
     this.modifyTopQuery(repositoryQueryBuilder)
   }
 
-  def includeIssues(issueQueryBuilder: IssueQueryBuilder): RepositoryQueryBuilder = {
+  def includeIssues(
+                     issueQueryBuilder: IssueQueryBuilder,
+                     numberOfResults: PaginationValue
+                   ): RepositoryQueryBuilder = {
+    issueQueryBuilder.topQuery = issueQueryBuilder.topQuery + s"(${numberOfResults.argument})"
     val repositoryQueryBuilder: RepositoryQueryBuilder = new RepositoryQueryBuilder(
       this.scalars,
       this.fields,
@@ -76,7 +84,11 @@ case class RepositoryQueryBuilder(scalars: List[String] = List(),
     this.modifyTopQuery(repositoryQueryBuilder)
   }
 
-  def includeLanguages(languageQueryBuilder: RepositoryOwnerQueryBuilder): RepositoryQueryBuilder = {
+  def includeLanguages(
+                        languageQueryBuilder: RepositoryOwnerQueryBuilder,
+                        numberOfResults: PaginationValue
+                      ): RepositoryQueryBuilder = {
+    languageQueryBuilder.topQuery = languageQueryBuilder.topQuery + s"(${numberOfResults.argument})"
     val repositoryQueryBuilder: RepositoryQueryBuilder = new RepositoryQueryBuilder(
       this.scalars,
       this.fields,
@@ -86,12 +98,14 @@ case class RepositoryQueryBuilder(scalars: List[String] = List(),
   }
 
   def includeRepositoryTopics(
-                               repositoryTopicQueryBuilder: RepositoryTopicQueryBuilder
+                               topicQueryBuilder: TopicQueryBuilder,
+                               numberOfResults: PaginationValue
                              ): RepositoryQueryBuilder = {
+    topicQueryBuilder.topQuery = topicQueryBuilder.topQuery + s"(${numberOfResults.argument})"
     val repositoryQueryBuilder: RepositoryQueryBuilder = new RepositoryQueryBuilder(
       this.scalars,
       this.fields,
-      repositoryTopicQueryBuilder :: this.connections
+      topicQueryBuilder :: this.connections
     )
     this.modifyTopQuery(repositoryQueryBuilder)
   }

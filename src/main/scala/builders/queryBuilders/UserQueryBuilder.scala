@@ -1,6 +1,6 @@
 package builders.queryBuilders
 
-import builders.QueryBuilder
+import builders.{PaginationValue, QueryBuilder}
 
 class UserQueryBuilder(scalars: List[String] = List(),
                         fields: List[QueryBuilder] = List(),
@@ -67,7 +67,11 @@ class UserQueryBuilder(scalars: List[String] = List(),
     this.modifyTopQuery(userQueryBuilder)
   }
 
-  def includeFollowing(followingQueryBuilder: UserQueryBuilder): UserQueryBuilder = {
+  def includeFollowing(
+                        followingQueryBuilder: UserQueryBuilder,
+                        numberOfResults: PaginationValue
+                      ): UserQueryBuilder = {
+    followingQueryBuilder.topQuery = followingQueryBuilder.topQuery + s"(${numberOfResults.argument})"
     val userQueryBuilder: UserQueryBuilder = new UserQueryBuilder(
       this.scalars,
       this.fields,
@@ -76,7 +80,11 @@ class UserQueryBuilder(scalars: List[String] = List(),
     this.modifyTopQuery(userQueryBuilder)
   }
 
-  def includeFollowers(followersQueryBuilder: UserQueryBuilder): UserQueryBuilder = {
+  def includeFollowers(
+                        followersQueryBuilder: UserQueryBuilder,
+                        numberOfResults: PaginationValue
+                      ): UserQueryBuilder = {
+    followersQueryBuilder.topQuery = followersQueryBuilder.topQuery + s"(${numberOfResults.argument})"
     val userQueryBuilder: UserQueryBuilder = new UserQueryBuilder(
       this.scalars,
       this.fields,
@@ -85,7 +93,11 @@ class UserQueryBuilder(scalars: List[String] = List(),
     this.modifyTopQuery(userQueryBuilder)
   }
 
-  def includeRepositories(repositoryQueryBuilder: RepositoryQueryBuilder): UserQueryBuilder = {
+  def includeRepositories(
+                           repositoryQueryBuilder: RepositoryQueryBuilder,
+                           numberOfResults: PaginationValue
+                         ): UserQueryBuilder = {
+    repositoryQueryBuilder.topQuery = repositoryQueryBuilder.topQuery + s"(${numberOfResults.argument})"
     val userQueryBuilder: UserQueryBuilder = new UserQueryBuilder(
       this.scalars,
       this.fields,
