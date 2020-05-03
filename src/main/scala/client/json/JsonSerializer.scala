@@ -2,7 +2,7 @@ package client.json
 
 import com.google.gson.JsonObject
 
-trait JsonSerializeParser {
+trait JsonSerializer {
 
   def serialize(jsonObj:JsonObject):String
 

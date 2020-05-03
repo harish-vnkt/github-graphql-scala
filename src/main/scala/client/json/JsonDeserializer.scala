@@ -5,7 +5,7 @@ package client.json
  * by the Json Parser Class(Jackson). The Parser is used for Json to scala object
  */
 
-trait JsonDeserializeParser {
+trait JsonDeserializer {
 
   /**
    *
