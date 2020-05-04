@@ -6,7 +6,7 @@ case class RepositoryOwnerQueryBuilder(scalars: List[String] = List(),
                                        fields: List[QueryBuilder] = List(),
                                        connections: List[QueryBuilder] = List()) extends QueryBuilder {
 
-  override var topQuery: String = "language"
+  override var topQuery: String = "owner"
 
   def modifyTopQuery(queryBuilder: RepositoryOwnerQueryBuilder): RepositoryOwnerQueryBuilder = {
     queryBuilder.topQuery = this.topQuery

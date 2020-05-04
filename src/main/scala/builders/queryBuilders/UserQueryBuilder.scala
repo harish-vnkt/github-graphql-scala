@@ -71,7 +71,7 @@ case class UserQueryBuilder(scalars: List[String] = List(),
                         followingQueryBuilder: UserQueryBuilder,
                         numberOfResults: PaginationValue
                       ): UserQueryBuilder = {
-    followingQueryBuilder.topQuery = followingQueryBuilder.topQuery + s"(${numberOfResults.argument})"
+    followingQueryBuilder.topQuery = "following" + s"(${numberOfResults.argument})"
     val userQueryBuilder: UserQueryBuilder = new UserQueryBuilder(
       this.scalars,
       this.fields,
@@ -84,7 +84,7 @@ case class UserQueryBuilder(scalars: List[String] = List(),
                         followersQueryBuilder: UserQueryBuilder,
                         numberOfResults: PaginationValue
                       ): UserQueryBuilder = {
-    followersQueryBuilder.topQuery = followersQueryBuilder.topQuery + s"(${numberOfResults.argument})"
+    followersQueryBuilder.topQuery = "followers" + s"(${numberOfResults.argument})"
     val userQueryBuilder: UserQueryBuilder = new UserQueryBuilder(
       this.scalars,
       this.fields,
@@ -97,7 +97,7 @@ case class UserQueryBuilder(scalars: List[String] = List(),
                            repositoryQueryBuilder: RepositoryQueryBuilder,
                            numberOfResults: PaginationValue
                          ): UserQueryBuilder = {
-    repositoryQueryBuilder.topQuery = repositoryQueryBuilder.topQuery + s"(${numberOfResults.argument})"
+    repositoryQueryBuilder.topQuery = "repositories" + s"(${numberOfResults.argument})"
     val userQueryBuilder: UserQueryBuilder = new UserQueryBuilder(
       this.scalars,
       this.fields,
