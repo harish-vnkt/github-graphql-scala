@@ -17,9 +17,20 @@ case class Query(queryString: String = "") {
                     ): Query = {
     repositoryQueryBuilder.topQuery = repositoryQueryBuilder.topQuery +
       s"""(name:\"$name\", owner:\"$owner\")"""
-    val queryObject = new Query("query { " + repositoryQueryBuilder.construct() + " }")
+    val queryObject = new Query("{ " + repositoryQueryBuilder.construct() + " }")
     queryObject.returnType = "repository"
     queryObject
   }
+
+//  def searchRepositories(
+//                          searchCriteriaBuilder: SearchCriteriaBuilder,
+//                          after: String
+//                        ): Query = {
+//    if (!after.equals("")) {
+//      searchCriteriaBuilder = searchCriteriaBuilder.setAfter(after)
+//    }
+//    val queryObject = new Query("query { " + searchCriteriaBuilder.construct() + " }")
+//    queryObject.returnType = "search"
+//  }
 
 }
