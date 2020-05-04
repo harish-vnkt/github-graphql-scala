@@ -4,6 +4,7 @@ import builders.Query
 import scalaj.http.Http
 import com.google.gson.{Gson, JsonObject}
 import client.json.{GsonDeserializer, GsonJsonSerializer, JacksonJsonDeserializer}
+import models.objects.{GraphQLObject, Repository, Search, User}
 
 case class HttpClient(headerPart:Map[String,String]= Map()){
 
@@ -19,7 +20,12 @@ case class HttpClient(headerPart:Map[String,String]= Map()){
     val responseJson = GsonDeserializer.build.deserialize(response.asString.body)
     val data = responseJson.getAsJsonObject("data").getAsJsonObject(returnType)
     val jsonString = GsonJsonSerializer.build.serialize(data)
-    JacksonJsonDeserializer.build.deserialize[T](jsonString).asInstanceOf[T]
+    returnType match {
+      case "repository" => JacksonJsonDeserializer.build.deserialize[Repository](jsonString).asInstanceOf[T]
+      case "user" => JacksonJsonDeserializer.build.deserialize[User](jsonString).asInstanceOf[T]
+      case "search" => JacksonJsonDeserializer.build.deserialize[Search](jsonString).asInstanceOf[T]
+    }
+
 
   }
 
