@@ -4,7 +4,6 @@ import builders.Query
 import scalaj.http.Http
 import com.google.gson.{Gson, JsonObject}
 import client.json.{GsonDeserializer, GsonJsonSerializer, JacksonJsonDeserializer}
-import models.objects.Repository
 
 case class HttpClient(headerPart:Map[String,String]= Map()){
 
@@ -17,12 +16,10 @@ case class HttpClient(headerPart:Map[String,String]= Map()){
       .headers(
         headerPart
       ).postData(jsonAst)
-    println(response)
     val responseJson = GsonDeserializer.build.deserialize(response.asString.body)
-    println(responseJson)
     val data = responseJson.getAsJsonObject("data").getAsJsonObject(returnType)
     val jsonString = GsonJsonSerializer.build.serialize(data)
-    JacksonJsonDeserializer.build.deserialize[Repository](jsonString).asInstanceOf[T]
+    JacksonJsonDeserializer.build.deserialize[T](jsonString).asInstanceOf[T]
 
   }
 
