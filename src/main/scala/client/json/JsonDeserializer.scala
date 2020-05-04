@@ -1,5 +1,7 @@
 package client.json
 
+import scala.reflect.ClassTag
+
 /**
  * Json Parser trait contains one method definition which needs to be implemented
  * by the Json Parser Class(Jackson). The Parser is used for Json to scala object

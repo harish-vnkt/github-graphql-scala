@@ -3,6 +3,7 @@ package client.json
 import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper}
 import com.fasterxml.jackson.module.scala.{DefaultScalaModule, ScalaObjectMapper}
 
+
 /**
  * The simple readValue API of the ObjectMapper+ScalaObjectMapper is a good entry point.
  * We are using it to parse or deserialize JSON content into a Scala object.
