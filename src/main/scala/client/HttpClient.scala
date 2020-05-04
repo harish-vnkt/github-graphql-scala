@@ -1,20 +1,22 @@
 package client
 
+import builders.Query
 import scalaj.http.Http
 import com.google.gson.{Gson, JsonObject}
-import client.json.{GsonJsonSerializer, JacksonJsonDeserializer,GsonDeserializer}
+import client.json.{GsonDeserializer, GsonJsonSerializer, JacksonJsonDeserializer}
+import models.objects.Repository
 
 case class HttpClient(headerPart:Map[String,String]= Map()){
 
   def executeQuery[T](queryObj:Query):T={
-    val jsonQuery = queryObj.getString()
-    val returnType =  queryObj.getReturnType()
+    val jsonQuery:String = queryObj.getQueryString
+    val returnType =  queryObj.getReturnType
     val jsonObj = jsonObjectCreation(jsonQuery)
     val jsonAst = GsonJsonSerializer.build.serialize(jsonObj)
     val response = Http("https://api.github.com/graphql")
-     .headers(
-       headerPart
-    ).postData(jsonAst)
+      .headers(
+        headerPart
+      ).postData(jsonAst)
     println(response)
     val responseJson = GsonDeserializer.build.deserialize(response.asString.body)
     println(responseJson)
