@@ -2,7 +2,7 @@ package builders.queryBuilders
 
 import builders.QueryBuilder
 
-class IssueQueryBuilder(scalars: List[String] = List(),
+case class IssueQueryBuilder(scalars: List[String] = List(),
                         fields: List[QueryBuilder] = List(),
                         connections: List[QueryBuilder] = List()) extends QueryBuilder {
 

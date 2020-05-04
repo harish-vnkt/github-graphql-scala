@@ -2,7 +2,7 @@ package builders.queryBuilders
 
 import builders.{PaginationValue, QueryBuilder}
 
-class UserQueryBuilder(scalars: List[String] = List(),
+case class UserQueryBuilder(scalars: List[String] = List(),
                         fields: List[QueryBuilder] = List(),
                         connections: List[QueryBuilder] = List()) extends QueryBuilder {
 
