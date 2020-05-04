@@ -1,10 +1,15 @@
 package builders
 
+import builders.Query.SearchType
 import builders.queryBuilders.RepositoryQueryBuilder
 
 case class Query(queryString: String) {
 
+  var returnType: String = ""
+
   def getQueryString: String = this.queryString
+
+  def getReturnType: String = this.returnType
 
   def findRepository(
                       name: String,
@@ -13,7 +18,9 @@ case class Query(queryString: String) {
                     ): Query = {
     repositoryQueryBuilder.topQuery = repositoryQueryBuilder.topQuery +
       s"(name: \"$name\", owner: \"$owner\")"
-    new Query(repositoryQueryBuilder.construct())
+    val queryObject = new Query("query { " + repositoryQueryBuilder.construct() + " }")
+    queryObject.returnType = "repository"
+    queryObject
   }
 
 }
