@@ -8,13 +8,13 @@ case class LanguageQueryBuilder(scalars: List[String] = List(),
 
   override var topQuery: String = "language"
 
-  def modifyTopQuery(queryBuilder: RepositoryOwnerQueryBuilder): RepositoryOwnerQueryBuilder = {
+  def modifyTopQuery(queryBuilder: LanguageQueryBuilder): LanguageQueryBuilder = {
     queryBuilder.topQuery = this.topQuery
     queryBuilder
   }
 
-  def includeName(): RepositoryOwnerQueryBuilder = {
-    val languageQueryBuilder: RepositoryOwnerQueryBuilder = new RepositoryOwnerQueryBuilder(
+  def includeName(): LanguageQueryBuilder = {
+    val languageQueryBuilder: LanguageQueryBuilder = new LanguageQueryBuilder(
       "name" :: this.scalars,
       this.fields,
       this.connections
@@ -22,8 +22,8 @@ case class LanguageQueryBuilder(scalars: List[String] = List(),
     this.modifyTopQuery(languageQueryBuilder)
   }
 
-  def includeColor(): RepositoryOwnerQueryBuilder = {
-    val languageQueryBuilder: RepositoryOwnerQueryBuilder = new RepositoryOwnerQueryBuilder(
+  def includeColor(): LanguageQueryBuilder = {
+    val languageQueryBuilder: LanguageQueryBuilder = new LanguageQueryBuilder(
       "color" :: this.scalars,
       this.fields,
       this.connections

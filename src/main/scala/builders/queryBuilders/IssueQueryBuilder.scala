@@ -2,7 +2,7 @@ package builders.queryBuilders
 
 import builders.QueryBuilder
 
-class IssueQueryBuilder(scalars: List[String] = List(),
+case class IssueQueryBuilder(scalars: List[String] = List(),
                         fields: List[QueryBuilder] = List(),
                         connections: List[QueryBuilder] = List()) extends QueryBuilder {
 
@@ -14,6 +14,7 @@ class IssueQueryBuilder(scalars: List[String] = List(),
   }
 
   def includeAuthor(authorQueryBuilder: RepositoryOwnerQueryBuilder): IssueQueryBuilder = {
+    authorQueryBuilder.topQuery = "author"
     val issueQueryBuilder: IssueQueryBuilder = new IssueQueryBuilder(
       this.scalars,
       authorQueryBuilder :: this.fields,
