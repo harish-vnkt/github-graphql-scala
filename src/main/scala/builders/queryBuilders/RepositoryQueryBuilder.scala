@@ -85,7 +85,7 @@ case class RepositoryQueryBuilder(scalars: List[String] = List(),
   }
 
   def includeLanguages(
-                        languageQueryBuilder: RepositoryOwnerQueryBuilder,
+                        languageQueryBuilder: LanguageQueryBuilder,
                         numberOfResults: PaginationValue
                       ): RepositoryQueryBuilder = {
     languageQueryBuilder.topQuery = "languages" + s"(${numberOfResults.argument})"
