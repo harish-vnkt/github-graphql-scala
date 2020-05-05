@@ -21,7 +21,7 @@ trait QueryBuilder {
     }
 
     for (connection <- this.connections) {
-      connection.topQuery = connection.topQuery + " nodes {"
+      connection.topQuery = connection.topQuery + " { nodes"
       returnString = returnString + " " + connection.construct()
       returnString = returnString + " }"
     }
