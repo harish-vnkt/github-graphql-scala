@@ -28,7 +28,8 @@ case class SearchQueryBuilder(
       returnString = returnString + " nodes { " + connection.construct() + " }"
     }
 
-    returnString = returnString + " }"
+    returnString = returnString + " pageInfo { endCursor } }"
+
     returnString
   }
 
