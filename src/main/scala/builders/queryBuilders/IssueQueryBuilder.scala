@@ -14,6 +14,7 @@ case class IssueQueryBuilder(scalars: List[String] = List(),
   }
 
   def includeAuthor(authorQueryBuilder: RepositoryOwnerQueryBuilder): IssueQueryBuilder = {
+    authorQueryBuilder.topQuery = "author"
     val issueQueryBuilder: IssueQueryBuilder = new IssueQueryBuilder(
       this.scalars,
       authorQueryBuilder :: this.fields,
