@@ -18,5 +18,7 @@ libraryDependencies ++= Seq(
   // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
   "com.fasterxml.jackson.core" % "jackson-databind" % "2.11.0",
   // https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-scala
-  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.11.0"
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.11.0",
+  // https://mvnrepository.com/artifact/org.scala-lang/scala-reflect
+  "org.scala-lang" % "scala-reflect" % "2.13.2"
 )
