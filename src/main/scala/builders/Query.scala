@@ -22,15 +22,10 @@ case class Query(queryString: String = "") {
     queryObject
   }
 
-//  def searchRepositories(
-//                          searchCriteriaBuilder: SearchCriteriaBuilder,
-//                          after: String
-//                        ): Query = {
-//    if (!after.equals("")) {
-//      searchCriteriaBuilder = searchCriteriaBuilder.setAfter(after)
-//    }
-//    val queryObject = new Query("query { " + searchCriteriaBuilder.construct() + " }")
-//    queryObject.returnType = "search"
-//  }
+  def searchRepositories(searchQueryBuilder: SearchQueryBuilder): Query = {
+    val queryObject = new Query("{ " + searchQueryBuilder.construct() + " }")
+    queryObject.returnType = "search"
+    queryObject
+  }
 
 }
