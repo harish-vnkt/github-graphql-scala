@@ -6,10 +6,28 @@ Bhuvana Sridhara (bsridh5@uic.edu)
 
 ***
 
+### Contents
+
+* [Requirements](#req)
+* [Building the code](#bui) 
+* [Description](#desc)
+* [Components](#comp)
+	* [Query Builder](#qbui)
+		* [Pagination Value](#pag)
+		* [Operation](#ope)
+	* [HTTP Client](#htt)
+		* [Serializer](#ser)
+		* [Deserializer](#des)
+	* [Scala Models](#sca)
+* [Results](#res)
+* [API reference](#api)
+
+<a name="req"></a>
 ### Requirements
 * [Intellij](https://www.jetbrains.com/idea/)
 * [SBT](https://www.scala-sbt.org/)
 
+<a name="bui"></a>
 ### Building the code
 Run the following from the command line - 
 
@@ -19,6 +37,7 @@ Run the following from the command line -
 * You can chain the tasks using ```sbt clean compile test```
 * To use the framework developed in this project, you can clone the repository and open the project in Intellij and run the commands from a main function using ```sbt run```. You can also run the code by opening the sbt shell in Intellij and typing ```run```
 
+<a name="desc"></a>
 ### Description
 
 The framework is a GraphQL client for the [GitHub API](https://developer.github.com/v4/) written in Scala. It allows the user to compose queries to access different kinds of GraphQL objects, send the queries to the GitHub API, and unmarshall the JSON response into appropriate Scala classes for the developer to use in their Scala code. 
@@ -33,6 +52,7 @@ The framework makes use of the _abstract factory_ and _builder_ design patterns.
 
 To jump straight to user instructions, click here!
 
+<a name="comp"></a>
 ### Components
 
 The query syntax required by the GitHub API is extensively documented and requires queries in a JSON format. Each query starts with a ```query``` keyword followed by curly braces inside which body of the query is defined.  In our framework, we currently support two kinds of queries - 
@@ -42,6 +62,7 @@ The query syntax required by the GitHub API is extensively documented and requir
 
 All queries are instantiated using a factory class called [```Query```](src/main/scala/builders/Query.scala) which contains two methods for each of the queries that the framework supports. Each method takes arguments specific to its functionality to compose a query from scratch. Each method also has one argument that is particularly used to compose the body of the query. For finding a single repository, we use the ```findRepository()``` function that takes the name and owner as required arguments along with a ```RepositoryQueryBuilder``` instance. For searching across all repositories, we use the ```searchRepositories()``` function that takes a single instance of  ```SearchQueryBuilder``` as an argument. These two methods return a new instance of ```Query``` which contains a string called ```queryString``` set to the composed query and another string called ```returnType``` set to a custom value that indicates the GraphQL object that the query is supposed to return.
 
+<a name="qbui"></a>
 #### Query Builder
 
 All builder classes for query except [```SearchQueryBuilder```](src/main/scala/builders/SearchQueryBuilder.scala) extend the [```QueryBuilder```](src/main/scala/builders/QueryBuilder.scala) abstract class. Each query builder sub-class behaves as a builder class that assembles the query string from scratch based on the functions called from the builders. We ensure referential transparency by returning new copies of the builder instances everytime a function in the builder is called. 
@@ -58,6 +79,7 @@ Any class that extends ```QueryBuilder``` must provide functions that add to any
 
 ![query-builders](readme-resources/query-builders.png)
 
+<a name="sqbui"></a>
 ##### SearchQueryBuilder
 
 The ```SearchQueryBuilder``` is slightly different from the rest of the query builders because we need to construct two different kinds of queries - 
@@ -73,14 +95,17 @@ Most of the functions deal with constructing filters in the __query argument__. 
 
 There is only one function that deals with constructing the __query body__, which is the ```includeRepository()``` function that takes a ```RepositoryQueryBuilder``` instance as an argument. This instance  can be used to specify the sub-fields in the repository query body and gets included in the connections list, which is iterated by the ```construct()``` function. 
 
+<a name="pag"></a>
 ##### PaginationValue
 
 ```PaginationValue``` represents the number of results to be returned. It is a trait that is implemented by two case classes - ```First``` and ```Last```. Each case class takes an integer as a parameter that specifies the number of results to return either from the first or from the last. The functions that query connections inside a ```QueryBuilder``` sub-type all require a ```PaginationValue``` parameter. The ```SearchQueryBuilder``` also requires a ```PaginationValue``` parameter to specify the number of returned results.
 
+<a name="ope"></a>
 ##### Operation
 
 For building the __query argument__ in ```SearchQueryBuilder```, some of the functions take an [```Operation```](src/main/scala/builders/Operation.scala) parameter. These represent comparison operations such as ```LessThan```, ```GreaterThan``` and ```Between```. All the ```Operation``` sub-types take integer parameters as operands for the respective operation. Some of the functions that take ```Operation``` argument involve filtering by number of stars, or number of followers, which can be found in ```SearchQueryBuilder```.
 
+<a name="htt"></a>
 #### HTTP Client
 
 The query built from the query builder component is encapsualted in an instance of the ```Query``` class that has a ```queryString``` along with it's getter.  This ```Query``` object is then sent to the HTTP client component returning the response from the API. 
@@ -91,10 +116,12 @@ A [```HttpClient```](src/main/scala/client/HttpClient.scala) object is built usi
 
 The ```build()``` function internally tests a sample query with the provided access token and returns an ```Option[HttpClient]``` object. This is ```None``` if the user has not provided the correct user token. This ```Option[HttpClient]``` is then flat-mapped into it's ```executeQuery()``` function which accepts a ```Query``` object as the argument. 
 
+<a name="ser"></a>
 ##### Serializer
 
 The ```executeQuery()``` function first extracts the query string from the ```Query``` object and then converts it to a JSON object using the [_Gson_](https://github.com/google/gson) library. The converted JSON object is then serialized using Gson and sent with a HTTP post call to the GitHub API.
 
+<a name="des"></a>
 ##### Deserializer
 
 ```executeQuery()``` also deserializes the JSON response into the appropriate Scala classes. It does so with the help of a _type parameter_ and _reflection_. 
@@ -103,6 +130,7 @@ Since we cannot determine the return of the query at compile time (it may be a s
 
 The deserializing takes place using the [_Jackson_](https://github.com/FasterXML/jackson-module-scala) module which takes a JSON response and a destination type and returns an object of the destination type with values filled from the JSON. The destination types are provided by the Scala models defined to represent the GraphQL objects.
 
+<a name="sca"></a>
 #### Scala Models
 
 To retrieve information from the API reponse and store it in Scala classes, we need to first create the Scala classes equivalent to the GraphQL objects. These are the __Scala models__.
@@ -121,6 +149,7 @@ We also support the following connections.
 
 Naturally, the query builders can only query the information that is supported in these Scala models. Even if a field not supported in the models is queried, the response for that field would be lost because there is not corresponding receiver.
 
+<a name="res"></a>
 ### Results
 
 We first read from ```application.conf``` - 
@@ -267,15 +296,17 @@ println(result.map(_.nodes.map(_.getRepositoryName)).getOrElse("None"))
 Output:
 List(handwriting-detector-app, AI-algorithms, ML4K-AI-Extension, MLmobileapps, Explainer, API-service, training2018, predicting-refactoring-ml, onnx4j, open-cezeri-library)
 ```
-
+<a name="api"></a>
 ### API reference
 
 The generated Scaladoc can be used as API documentation for instructions on how to build different kinds of queries. We have implemented seven query builders to query seven different kinds of GraphQL objects under the ```findRepository()``` function. The below are the links to the Scaladoc.
 
-* [```RepositoryQueryBuilder```](target/scala-2.13/api/builders/queryBuilders/RepositoryQueryBuilder.html)
-* [```UserQueryBuilder```](target/scala-2.13/api/builders/queryBuilders/UserQueryBuilder.html)
-* [```IssueQueryBuilder```](target/scala-2.13/api/builders/queryBuilders/IssueQueryBuilder.html)
-* [```LanguageQueryBuilder```](target/scala-2.13/api/builders/queryBuilders/LanguageQueryBuilder.html)
-* [```RepositoryTopicQueryBuilder```](target/scala-2.13/api/builders/queryBuilders/RepositoryTopicQueryBuilder.html)
-* [```TopicQueryBuilder```](target/scala-2.13/api/builders/queryBuilders/TopicQueryBuilder.html)
-* [```RepositoryOwnerQueryBuilder```](target/scala-2.13/api/builders/queryBuilders/RepositoryOwnerQueryBuilder.html)
+* [```RepositoryQueryBuilder```](scaladoc/api/builders/queryBuilders/RepositoryQueryBuilder.html)
+* [```UserQueryBuilder```](scaladoc/api/builders/queryBuilders/UserQueryBuilder.html)
+* [```IssueQueryBuilder```](scaladoc/api/builders/queryBuilders/IssueQueryBuilder.html)
+* [```LanguageQueryBuilder```](scaladoc/api/builders/queryBuilders/LanguageQueryBuilder.html)
+* [```RepositoryTopicQueryBuilder```](scaladoc/api/builders/queryBuilders/RepositoryTopicQueryBuilder.html)
+* [```TopicQueryBuilder```](scaladoc/api/builders/queryBuilders/TopicQueryBuilder.html)
+* [```RepositoryOwnerQueryBuilder```](scaladoc/api/builders/queryBuilders/RepositoryOwnerQueryBuilder.html)
+
+For searching across all the repositories, the [```SearchQueryBuilder```](scaladoc/api/builders/SearchQueryBuilder.html) provides good documentation.
