@@ -2,7 +2,9 @@
 # (may want to keep parts of 'project')
 bin/
 project/
-target/
+target/scala-2.13/classes
+target/scala-2.13/update
+target/scala-2.13/github-graphql-scala_2.13-0.1.jar
 build/
 
 # intellij idea
