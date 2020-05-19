@@ -1,4 +1,10 @@
-# Scala Client for GitHub GraphQL
+# Scala Client for GitHub GraphQL 
+
+***
+
+## Course Project for CS474 @ UIC
+
+***
 
 Harish Venkataraman (hvenka8@uic.edu)
 
@@ -309,10 +315,3 @@ The generated Scaladoc can be used as API documentation for instructions on how 
 * [```RepositoryOwnerQueryBuilder```](src/main/scala/builders/queryBuilders/RepositoryOwnerQueryBuilder.scala)
 
 For searching across all the repositories, the [```SearchQueryBuilder```](src/main/scala/builders/SearchQueryBuilder.scala) has been provided.
-
-### Areas of improvement
-
-* __Design__ - Ideally, we would not like to separate the query building functionality from the Scala models. Combining the two gives us a way to specify queries by specifying their corresponding Scala models making query building more intuitive
-* __Repeated functionality__ - All the functions in the ```QueryBuilder``` sub-types do a finite set of tasks which can be further abstracted avoiding a lot of task repetition. For example, they all add to the scalars, fields or connections, so there is scope for further abstraction
-* __Deserializing__ - As mentioned in the [Deserializer](#markdown-header-deserializer) subsection, the returned results need to be explicitely cast into the specific Scala model so we can use the functionality of the model. This could be improved
-* __Phantom types for query builders__ - A user can build an incorrect query by not specifying any subfields in the query builder. This is caught only at runtime when the response returns a null. We could force correct query building at compile time using phantom types
